@@ -14,7 +14,7 @@ const CarList = () => {
   return loading ? (
     <LoadingScreen />
   ) : (
-    <View>
+    <View style={tailwind`flex-1 pb-4`}>
       <SearchBar />
       <FlatList
         data={cars}

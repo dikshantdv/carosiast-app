@@ -26,7 +26,7 @@ const MenuLists = () => {
           </Text>
           <CategoryList />
           {menus.map((item) => (
-            <MenuSegment {...item} />
+            <MenuSegment {...item} key={item.title} />
           ))}
         </ScrollView>
       </View>
