@@ -11,6 +11,8 @@ import SkeletonItem from "./SkeletonItem";
 const List = () => {
   const showrooms = useSelector((state) => state.detail.showrooms);
   const loading = useSelector((state) => state.detail.showroomLoading);
+  console.log(loading, showrooms);
+
   return loading ? (
     <SkeletonItem w={350} h={200} />
   ) : (

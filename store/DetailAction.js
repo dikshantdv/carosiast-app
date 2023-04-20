@@ -3,7 +3,7 @@ import { detailActions } from "./DetailSlice";
 export const setDetailData = (_id, lat, lng) => {
   return async (dispatch) => {
     dispatch(detailActions.setDetailLoading(true));
-    // dispatch(detailActions.setShowroomLoading(true));
+    dispatch(detailActions.setShowroomLoading(true));
 
     const sendRequest = async () => {
       const response = await fetch(
@@ -46,10 +46,10 @@ export const setDetailData = (_id, lat, lng) => {
 
       return data;
     };
-    // const showroomData = await sendShowroomRequest();
-    // console.log(showroomData);
-    // dispatch(detailActions.replaceShowroomData(showroomData.showrooms));
-    // dispatch(detailActions.setShowroomLoading(false));
+    const showroomData = await sendShowroomRequest();
+    console.log(showroomData);
+    dispatch(detailActions.replaceShowroomData(showroomData.showrooms));
+    dispatch(detailActions.setShowroomLoading(false));
   };
 };
 
@@ -70,5 +70,23 @@ export const setSelectedVariantData = (_id, carId) => {
     const selectedVariant = await sendVariantRequest();
     dispatch(detailActions.setSelectedVariant(selectedVariant.variant));
     dispatch(detailActions.setDetailLoading(false));
+  };
+};
+export const setSelectedCityData = (cityName) => {
+  return async (dispatch) => {
+    const sendCityRequest = async () => {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=68bb7a7095aec3873d6c891c21c4fc55`
+      );
+      if (!response.ok) {
+        return;
+      }
+      const data = await response.json();
+
+      return data;
+    };
+    const selectedCity = await sendCityRequest();
+    dispatch(detailActions.replaceCityName(cityName));
+    dispatch(detailActions.replaceCoordinateData([selectedCity.coord.lat, selectedCity.coord.lon]));
   };
 };

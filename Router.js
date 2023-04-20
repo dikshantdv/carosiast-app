@@ -21,7 +21,7 @@ import { Provider, useDispatch } from "react-redux";
 import store from "./store/index";
 import { LoadingScreen } from "./components/LoadingScreen";
 
-import { AntDesign, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import SearchBar from "./components/SearchBar";
 import Filter from "./components/Filter";
 import Favorite from "./components/Favorite";
@@ -29,6 +29,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import tailwind from "twrnc";
 import { useEffect } from "react";
 import { detailActions } from "./store/DetailSlice";
+import FilterOverlay from "./components/FilterOverlay";
 
 const Stack = createNativeStackNavigator();
 
@@ -96,12 +97,22 @@ export default function Router() {
         return;
       }
       const location = await Location.getCurrentPositionAsync({});
+
+      const nameData = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${location.coords.latitude}&lon=${location.coords.longitude}&limit=5&appid=68bb7a7095aec3873d6c891c21c4fc55`)
+      const data = await nameData.json();
+      console.log(location);
+
+
+
       dispatch(
         detailActions.replaceCoordinateData([
           location.coords.latitude,
           location.coords.longitude,
         ])
       );
+      dispatch(
+        detailActions.replaceCityName(data[0].name.split(" ")[0])
+      )
     })();
   }, []);
   const Drawer = createDrawerNavigator();
@@ -124,20 +135,11 @@ export default function Router() {
                   />
                 </Pressable>
               ),
-              // headerRight: () => {
-              //   return (
-              //     <View
-              //       style={tailwind`flex-row justify-center items-center h-16`}
-              //     >
-              //       <Pressable
-              //         style={tailwind`py-4 mx-2`}
-              //         onPress={() => navigation.navigate("Favorite")}
-              //       >
-              //         <AntDesign name="hearto" size={28} color="#181647" />
-              //       </Pressable>
-              //     </View>
-              //   );
-              // },
+              headerRight: () => {
+                return (
+                  <FilterOverlay />
+                );
+              },
             };
           }}
         >

@@ -379,13 +379,13 @@ const Detail = ({ navigation }) => {
             <ListAccordianList list={data} />
           </>
         )}
-        {/* <View style={tailwind`py-2 flex-row items-center`}>
+        <View style={tailwind`py-2 flex-row items-center`}>
           <Ionicons name="location-sharp" size={20} color="black" />
           <Text style={tailwind`text-2xl font-bold mx-1`}>
             Showrooms near you
           </Text>
         </View>
-        <ShowroomList /> */}
+        <ShowroomList />
       </ScrollView>
     </View>
   );
